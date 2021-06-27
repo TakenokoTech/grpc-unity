@@ -2,14 +2,14 @@ syntax = "proto3";
 option java_package = "tech.takenoko.grpcspring.proto";
 
 service Calculator {
-    rpc Add (AdditionRequest) returns (AdditionReply);
+  rpc Add (AdditionRequest) returns (AdditionReply);
 }
 
 message AdditionRequest {
-    int32 added = 1;
-    int32 add = 2;
+  int32 added = 1;
+  int32 add = 2;
 }
 
 message AdditionReply {
-    int32 result = 1;
+  int32 result = 1;
 }

@@ -30,14 +30,19 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
 	// spring
-	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
+	// coroutines
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.5.0")
+
 	// grpc
 	implementation("com.google.protobuf:protobuf-java:3.17.3")
-	implementation("io.grpc:grpc-stub:1.38.1")
+	// implementation("io.grpc:grpc-stub:1.38.1")
+	implementation("io.grpc:grpc-kotlin-stub:1.1.0")
 	implementation("io.grpc:grpc-protobuf:1.38.1")
 	implementation("io.github.lognet:grpc-spring-boot-starter:4.5.4")
 }
@@ -57,14 +62,20 @@ sourceSets {
 	main {
 		java {
 			srcDirs("build/generated/source/proto/main/grpc")
+			srcDirs("build/generated/source/proto/main/grpckt")
 			srcDirs("build/generated/source/proto/main/java")
 		}
 	}
 }
 
 protobuf {
-	// generatedFilesBaseDir = "$projectDir/src/"
 	protoc { artifact = "com.google.protobuf:protoc:3.17.3" }
-	plugins { id("grpc") { artifact = "io.grpc:protoc-gen-grpc-java:1.38.1" } }
-	generateProtoTasks { ofSourceSet("main").forEach { it.plugins { id("grpc") } } }
+	plugins {
+		id("grpc") { artifact = "io.grpc:protoc-gen-grpc-java:1.38.1" }
+		id("grpckt") { artifact = "io.grpc:protoc-gen-grpc-kotlin:1.1.0:jdk7@jar" }
+	}
+	generateProtoTasks { ofSourceSet("main").forEach { it.plugins {
+		id("grpc")
+		id("grpckt")
+	} } }
 }
