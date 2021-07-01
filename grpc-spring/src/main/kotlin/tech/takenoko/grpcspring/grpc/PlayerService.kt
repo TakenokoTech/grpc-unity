@@ -15,6 +15,7 @@ import tech.takenoko.grpcspring.utils.MessageInterceptor
 /**
  * grpcurl -plaintext -d '{"uuid": "1"}' localhost:6565 tech.takenoko.grpcspring.proto.Player/Move
  * grpcurl -plaintext -d '{"uuid": "1", "position": {"x": 100, "y":100, "z": 100}}' localhost:6565 tech.takenoko.grpcspring.proto.Player/Move
+ * grpcurl -plaintext -d '{"uuid": "1"}' localhost:6565 tech.takenoko.grpcspring.proto.Player/Changed
  */
 @ExperimentalCoroutinesApi
 @GRpcService(interceptors = [MessageInterceptor::class])
