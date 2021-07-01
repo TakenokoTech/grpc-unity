@@ -9,7 +9,7 @@ import tech.takenoko.grpcspring.proto.GreeterOuterClass.HelloReply
 import tech.takenoko.grpcspring.proto.GreeterOuterClass.HelloRequest
 
 /**
- * $grpcurl -plaintext -d '{"message": "world"}' localhost:6565 Greeter/SayHelloStream
+ * $grpcurl -plaintext -d '{"message": "world"}' localhost:6565 tech.takenoko.grpcspring.proto.Greeter/SayHelloStream
  */
 @GRpcService
 class GreeterService : GreeterGrpcKt.GreeterCoroutineImplBase() {

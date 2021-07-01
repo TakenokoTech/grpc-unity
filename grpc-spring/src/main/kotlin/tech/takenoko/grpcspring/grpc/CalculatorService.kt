@@ -6,7 +6,7 @@ import tech.takenoko.grpcspring.proto.CalculatorOuterClass.AdditionRequest
 import tech.takenoko.grpcspring.proto.CalculatorOuterClass.AdditionReply
 
 /**
- * grpcurl -plaintext -d '{"added": 1, "add": 2}' localhost:6565 Greeter
+ * grpcurl -plaintext -d '{"added": 1, "add": 2}' localhost:6565 tech.takenoko.grpcspring.proto.Calculator/Add
  */
 @GRpcService
 class CalculatorService : CalculatorCoroutineImplBase() {

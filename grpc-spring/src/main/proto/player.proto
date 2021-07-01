@@ -1,0 +1,30 @@
+syntax = "proto3";
+package tech.takenoko.grpcspring.proto;
+import "common.proto";
+option java_package = "tech.takenoko.grpcspring.proto";
+
+service Player {
+  rpc Move (MoveRequest) returns (MoveReply);
+  rpc Changed (ChangedRequest) returns (stream ChangedReply);
+}
+
+message MoveRequest {
+  string uuid = 1;
+  Vector3_ position = 2;
+  Vector3_ rotation = 3;
+  Status_ status = 4;
+}
+
+message MoveReply {
+}
+
+message ChangedRequest {
+  string uuid = 1;
+}
+
+message ChangedReply {
+  string uuid = 1;
+  Vector3_ position = 2;
+  Vector3_ rotation = 3;
+  Status_ status = 4;
+}

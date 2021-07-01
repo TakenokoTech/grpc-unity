@@ -1,4 +1,5 @@
 syntax = "proto3";
+package tech.takenoko.grpcspring.proto;
 option java_package = "tech.takenoko.grpcspring.proto";
 
 service Calculator {

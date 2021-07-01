@@ -1,0 +1,14 @@
+syntax = "proto3";
+package tech.takenoko.grpcspring.proto;
+option java_package = "tech.takenoko.grpcspring.proto";
+
+message Vector3_ {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+}
+
+message Status_ {
+  int32 hp = 1;
+  int32 mp = 2;
+}
