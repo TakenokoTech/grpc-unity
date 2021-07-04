@@ -7,23 +7,43 @@ using UnityEngine;
 
 namespace Script
 {
-    public abstract class BaseGrpc: MonoBehaviour
+    public abstract class BaseGrpc : MonoBehaviour
     {
         private Channel _channel;
         protected Player.PlayerClient Client;
-        
+
         protected void Start()
         {
+            Debug.LogFormat("===> Start");
             _channel = new Channel("localhost:6565", ChannelCredentials.Insecure);
             StartCoroutine(Connect());
-        }
-        
-        protected void OnDestroy()
-        {
-            _channel.ShutdownAsync().Start();
+            Debug.LogFormat("<=== Start");
         }
 
-        protected abstract void ConnectCompletion();
+        private void Update()
+        {
+            var outX = Math.Abs(transform.position.x) > 100;
+            var outY = Math.Abs(transform.position.y) > 100;
+            var outZ = Math.Abs(transform.position.z) > 100;
+            if (outX || outY || outZ) Destroy(this);
+        }
+
+        protected async void OnDestroy()
+        {
+            Debug.LogFormat("===> OnDestroy");
+            try
+            {
+                await _channel.ShutdownAsync();
+            }
+            catch (Exception e)
+            {
+            }
+            Debug.LogFormat("<=== OnDestroy");
+        }
+
+        protected virtual void ConnectCompletion()
+        {
+        }
 
         private IEnumerator Connect()
         {
@@ -53,6 +73,7 @@ namespace Script
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
+
                 yield return new WaitForSeconds(1);
             }
         }

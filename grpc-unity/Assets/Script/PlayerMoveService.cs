@@ -1,25 +1,18 @@
 using System;
-using Grpc.Core;
-using JetBrains.Annotations;
 using Tech.Takenoko.Grpcspring.Proto;
-using UnityEngine;
 
 namespace Script
 {
     public class PlayerMoveService: BaseGrpc
     {
-        [SerializeField] private string objUuid;
+        public string objUuid;
         
         private new void Start()
         {
             base.Start();
         }
 
-        protected override void ConnectCompletion()
-        {
-        }
-
-        private void Update()
+        private void LateUpdate()
         {
             Client?.Move(new MoveRequest
             {

@@ -8,32 +8,14 @@ namespace Script
     {
         public float accX = 0F;
         public float accZ = 0F;
-        private void LateUpdate()
+
+        private void Start()
         {
-            transform.position = new Vector3(
-                transform.position.x + accX,
-                transform.position.y + 0,
-                transform.position.z + accZ
-            );
+            GetComponent<Rigidbody>().AddForce(accX * 30, 0, accZ * 30, ForceMode.Impulse);
         }
 
-        private void OnCollisionEnter(Collision other)
+        private void LateUpdate()
         {
-            // Debug.LogFormat("OnCollisionEnter: {0}", other.gameObject.name);
-            switch (other.gameObject.name)
-            {
-                case "WallX":
-                    accZ *= -1; // + (float)(new Random().NextDouble() - 0.5);
-                    break;
-                case "WallZ":
-                    accX *= -1; // + (float)(new Random().NextDouble() - 0.5);
-                    break;
-                case "ChangedSphere":
-                    var tempX = accX;
-                    accX = -1 * accZ;
-                    accZ = -1 * tempX;
-                    break;
-            }
         }
     }
 }

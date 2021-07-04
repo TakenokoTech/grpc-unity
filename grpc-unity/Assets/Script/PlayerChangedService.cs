@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Tech.Takenoko.Grpcspring.Proto;
@@ -9,8 +8,8 @@ namespace Script
 {
     public class PlayerChangedService: BaseGrpc
     {
-        [SerializeField] private string objUuid;
-        [SerializeField] private Vector3 offset;
+        public string objUuid;
+        public Vector3 offset;
 
         private new void Start()
         {
@@ -31,7 +30,6 @@ namespace Script
                 var rotation = call.ResponseStream.Current.Rotation;
                 transform.position = new Vector3(position.X + offset.x, position.Y+ offset.y, position.Z+ offset.z);
                 transform.eulerAngles = new Vector3(rotation.X, rotation.Y, rotation.Z);
-                Debug.LogFormat("uuid: {0}", uuid);
             }
         }
     }
