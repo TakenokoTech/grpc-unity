@@ -1,5 +1,8 @@
 using System;
+using Grpc.Core;
+using Script.utils;
 using Tech.Takenoko.Grpcspring.Proto;
+using UnityEngine;
 
 namespace Script
 {
@@ -13,6 +16,11 @@ namespace Script
         }
 
         private void LateUpdate()
+        {
+            this.RunCatching(_ => Move());
+        }
+
+        private void Move()
         {
             Client?.Move(new MoveRequest
             {
