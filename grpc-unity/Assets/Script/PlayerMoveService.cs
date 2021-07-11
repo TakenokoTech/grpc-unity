@@ -1,8 +1,6 @@
-using System;
-using Grpc.Core;
+using Script.repository;
 using Script.utils;
 using Tech.Takenoko.Grpcspring.Proto;
-using UnityEngine;
 
 namespace Script
 {
@@ -22,7 +20,7 @@ namespace Script
 
         private void Move()
         {
-            Client?.Move(new MoveRequest
+            var routine = ClientRepository.Move(new MoveRequest
             {
                 Uuid = objUuid,
                 Position = new Vector3_
@@ -38,6 +36,7 @@ namespace Script
                     Z = transform.eulerAngles.z
                 }
             });
+            StartCoroutine(routine);
         }
     }
 }

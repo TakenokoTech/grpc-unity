@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Script.utils
 {
@@ -16,6 +17,7 @@ namespace Script.utils
             }
             catch (Exception e)
             {
+                Debug.LogWarning(e);
                 return new Promise<TR>(e);
             }
         }
@@ -29,6 +31,7 @@ namespace Script.utils
             }
             catch (Exception e)
             {
+                Debug.LogWarning(e);
                 return new Promise<bool>(e);
             }
         }
