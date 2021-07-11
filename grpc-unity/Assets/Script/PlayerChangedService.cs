@@ -1,3 +1,4 @@
+using System;
 using Grpc.Core;
 using Tech.Takenoko.Grpcspring.Proto;
 using UnityEngine;
@@ -28,18 +29,20 @@ namespace Script
             base.OnDestroy();
         }
 
-        private void Changed()
+        private async void Changed()
         {
-            Debug.LogFormat("Changed. {0}", call.ResponseStream);
-            call.ResponseStream.MoveNext().ContinueWith(it => {
-                Debug.LogFormat("ContinueWith");
-                var uuid = call.ResponseStream.Current.Uuid;
-                var position = call.ResponseStream.Current.Position;
-                var rotation = call.ResponseStream.Current.Rotation;
-                transform.position = new Vector3(position.X + offset.x, position.Y+ offset.y, position.Z+ offset.z);
-                transform.eulerAngles = new Vector3(rotation.X, rotation.Y, rotation.Z);
-                Changed();
-            });
+            while (Channel.State == ChannelState.Ready)
+            {
+                try
+                {
+                    await call.ResponseStream.MoveNext();
+                    var position = call.ResponseStream.Current.Position;
+                    var rotation = call.ResponseStream.Current.Rotation;
+                    transform.position = new Vector3(position.X + offset.x, position.Y+ offset.y, position.Z+ offset.z);
+                    transform.eulerAngles = new Vector3(rotation.X, rotation.Y, rotation.Z);
+                }
+                catch (Exception) { continue; }
+            }
         }
     }
 }

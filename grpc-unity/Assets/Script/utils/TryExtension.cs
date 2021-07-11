@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace Script.utils
 {
@@ -18,7 +19,7 @@ namespace Script.utils
                 return new Promise<TR>(e);
             }
         }
-        
+
         public static Promise<bool> RunCatching<T>(this T self, TryBlockVoid<T> block)
         {
             try
