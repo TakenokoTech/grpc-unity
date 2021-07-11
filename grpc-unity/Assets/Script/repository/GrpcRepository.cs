@@ -13,31 +13,47 @@ namespace Script.repository
 
         public static void Destroy() => GrpcChannel.RunCatching(async _ => await GrpcChannel.ShutdownAsync());
 
-        public static void Looper<T>(Func<AsyncServerStreamingCall<T>> getCall, Action exception) where T : class
+        public static void Looper<T>(ILooperDelegate<T> d) where T : class
         {
+            var tokenSource = new CancellationTokenSource();
             SessionLoop(() =>
             {
-                Debug.LogFormat("State: {0}", GrpcChannel.State);
-                if (getCall() != null && GrpcChannel.State == ChannelState.Ready) return getCall().ResponseStream.MoveNext();
+                // Debug.LogFormat("State: {0}", GrpcChannel.State);
+                if (GrpcChannel.State == ChannelState.Shutdown) tokenSource.Cancel();
+                var call = d.GetStreamingCall();
+                if (call != null && GrpcChannel.State == ChannelState.Ready) return call.ResponseStream.MoveNext();
                 throw new InvalidOperationException("bad state.");
-            }, exception);
+            }, d.ConnectError, tokenSource);
         }
 
-        private static async void SessionLoop(Func<Task> function, Action exception)
+        private static async void SessionLoop(Func<Task> function, Action exception, CancellationTokenSource token)
         {
             var failedCount = 0;
-            while (true)
+            while (!token.IsCancellationRequested)
                 try
                 {
                     await function();
                     failedCount = 0;
                 }
+                catch (RpcException e)
+                {
+                    Debug.LogFormat("RpcException: {0}", e.StatusCode);
+                    if (e.StatusCode == StatusCode.Cancelled) token.Cancel();
+                    if (failedCount++ > 3) exception();
+                    Thread.Sleep(500);
+                }
                 catch (Exception e)
                 {
                     Debug.LogWarning(e);
                     if (failedCount++ > 3) exception();
-                    Thread.Sleep(500);
+                    Thread.Sleep(1000);
                 }
         }
+    }
+
+    public interface ILooperDelegate<T> where T : class
+    {
+        AsyncServerStreamingCall<T> GetStreamingCall();
+        void ConnectError();
     }
 }

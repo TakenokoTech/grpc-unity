@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Script
 {
-    public class PlayerChangedService : BaseGrpc
+    public class PlayerChangedService : BaseGrpc, ILooperDelegate<ChangedReply>
     {
         public string objUuid;
         public Vector3 offset;
@@ -20,19 +20,18 @@ namespace Script
         private new void Start()
         {
             base.Start();
-            looper = Task.Run(() => GrpcRepository.Looper(() => call, () =>
-            {
-                this.RunCatching(_ => call.Dispose());
-                call = null;
-            }));
+            looper = Task.Run(() => GrpcRepository.Looper(this));
         }
 
         private void LateUpdate()
         {
             if (call == null)
             {
-                Debug.LogFormat("call is null.");
-                var routine = ClientRepository.Changed(new ChangedRequest {Uuid = objUuid}, c => { call = c; });
+                var routine = ClientRepository.Changed(new ChangedRequest {Uuid = objUuid}, c =>
+                {
+                    Debug.LogFormat("call");
+                    call = c;
+                });
                 StartCoroutine(routine);
             }
             this.RunCatching(_ =>
@@ -49,6 +48,14 @@ namespace Script
             this.RunCatching(_ => looper.Dispose());
             this.RunCatching(_ => call.Dispose());
             base.OnDestroy();
+        }
+
+        public AsyncServerStreamingCall<ChangedReply> GetStreamingCall() => call;
+
+        public void ConnectError()
+        {
+            this.RunCatching(_ => call.Dispose());
+            this.RunCatching(_ => call = null);
         }
     }
 }

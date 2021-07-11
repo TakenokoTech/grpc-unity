@@ -3,6 +3,7 @@ using System.Collections;
 using Grpc.Core;
 using Script.utils;
 using Tech.Takenoko.Grpcspring.Proto;
+using UnityEngine;
 
 namespace Script.repository
 {
@@ -10,11 +11,13 @@ namespace Script.repository
     {
         public static IEnumerator Move(MoveRequest request)
         {
+            // Debug.LogFormat("Move");
             return Connect(client => client.Move(request));
         }
 
         public static IEnumerator Changed(ChangedRequest request, Action<AsyncServerStreamingCall<ChangedReply>> callback)
         {
+            // Debug.LogFormat("Changed");
             return Connect(client => callback(client.Changed(request)));
         }
 

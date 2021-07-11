@@ -8,6 +8,8 @@ namespace Script.utils
 {
     public static class GrpcUtils
     {
+        private static float _lastConnectTime;
+        
         public static IEnumerator Connect(Channel channel, Action callback)
         {
             if (channel.State == ChannelState.Ready)
@@ -15,9 +17,13 @@ namespace Script.utils
                 callback();
                 yield break;
             }
-
+            
+            if (Time.time - _lastConnectTime < 3) yield break;
+            _lastConnectTime = Time.time;
+            
             var status = channel.ConnectAsync().Status;
             Debug.LogFormat("Status: {0}", status);
+            
             switch (status)
             {
                 case TaskStatus.Canceled:

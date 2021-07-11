@@ -1229,7 +1229,7 @@ MonoBehaviour:
   syncObj: {fileID: 4359877761901488824, guid: ee0e0916c41fa48859fb46676ee1728d, type: 3}
   botName: left
   syncName: right
-  count: 1
+  count: 5
   offset: {x: 0, y: 0, z: -36}
 --- !u!1 &1375236601
 GameObject:
@@ -1562,7 +1562,7 @@ MonoBehaviour:
   syncObj: {fileID: 4359877761901488824, guid: ee0e0916c41fa48859fb46676ee1728d, type: 3}
   botName: right
   syncName: left
-  count: 1
+  count: 5
   offset: {x: 0, y: 0, z: 36}
 --- !u!1 &1737441306
 GameObject:
