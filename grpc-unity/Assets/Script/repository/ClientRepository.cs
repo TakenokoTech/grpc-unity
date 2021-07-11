@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
 using Grpc.Core;
-using Script.utils;
 using Tech.Takenoko.Grpcspring.Proto;
-using UnityEngine;
 
 namespace Script.repository
 {
@@ -23,7 +21,7 @@ namespace Script.repository
 
         private static IEnumerator Connect(Action<Player.PlayerClient> callback)
         {
-            return GrpcUtils.Connect(GrpcChannel, () => callback(new Player.PlayerClient(GrpcChannel)));
+            return GrpcRepository.Connect(GrpcChannel, () => callback(new Player.PlayerClient(GrpcChannel)));
         }
     }
 }

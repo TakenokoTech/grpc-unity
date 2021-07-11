@@ -25,6 +25,7 @@ namespace Script
         {
             if (call == null)
             {
+                Debug.LogFormat("Disconnect");
                 ClientRepository.Changed(new ChangedRequest {Uuid = objUuid}, it => call = it).Execute(this);
             }
             this.RunCatching(_ =>
@@ -47,6 +48,7 @@ namespace Script
 
         public void ConnectError()
         {
+            Debug.LogFormat("ConnectError");
             this.RunCatching(_ => call.Dispose());
             this.RunCatching(_ => call = null);
         }

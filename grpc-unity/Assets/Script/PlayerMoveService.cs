@@ -7,11 +7,6 @@ namespace Script
     public class PlayerMoveService: BaseGrpc
     {
         public string objUuid;
-        
-        private new void Start()
-        {
-            base.Start();
-        }
 
         private void LateUpdate()
         {

@@ -10,7 +10,7 @@ namespace Script
             // Debug.LogFormat("<=== Start");
         }
 
-        private void Update()
+        protected void Update()
         {
             // Debug.LogFormat("===> Update");
             // Debug.LogFormat("<=== Update");
