@@ -20,7 +20,7 @@ namespace Script
 
         private void Move()
         {
-            var routine = ClientRepository.Move(new MoveRequest
+            ClientRepository.Move(new MoveRequest
             {
                 Uuid = objUuid,
                 Position = new Vector3_
@@ -35,8 +35,7 @@ namespace Script
                     Y = transform.eulerAngles.y,
                     Z = transform.eulerAngles.z
                 }
-            });
-            StartCoroutine(routine);
+            }).Execute(this);
         }
     }
 }

@@ -1,5 +1,3 @@
-using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Script.repository;
@@ -27,12 +25,7 @@ namespace Script
         {
             if (call == null)
             {
-                var routine = ClientRepository.Changed(new ChangedRequest {Uuid = objUuid}, c =>
-                {
-                    Debug.LogFormat("call");
-                    call = c;
-                });
-                StartCoroutine(routine);
+                ClientRepository.Changed(new ChangedRequest {Uuid = objUuid}, it => call = it).Execute(this);
             }
             this.RunCatching(_ =>
             {
